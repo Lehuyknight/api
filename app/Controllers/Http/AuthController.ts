@@ -85,7 +85,7 @@ export default class AuthController {
     }
 
     //logout()
-    public async logout({request, response, auth}){
+    public async logout({response, auth}){
         //revoke token        
         await auth.use('api').revoke()
         await Database.from('api_tokens').delete().where('expires_at','<',`${DateTime.now().toSQLDate()} ${DateTime.now().toSQLTime()}`)
