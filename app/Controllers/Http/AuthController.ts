@@ -1,12 +1,10 @@
-export default class AuthController {
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {schema as Schema, rules} from '@ioc:Adonis/Core/Validator'
 import ResponseData from 'App/utils/ResponseData'
 const EnumStatus = require('App/utils/EnumStatus')
 import User from 'App/Models/User'
-import Role from 'App/Models/Role'
 import Database from '@ioc:Adonis/Lucid/Database'
-import Permission from 'App/Models/Permission'
+import { DateTime } from 'luxon'
 export default class AuthController {
     public async signup({request, response}:HttpContextContract){
         const validator = await Schema.create({
@@ -21,7 +19,8 @@ export default class AuthController {
                 rules.required()
             ]),
             name: Schema.string([
-                rules.trim()
+                rules.trim(),
+                rules.maxLength(100)
             ]),
             phone: Schema.string([
                 rules.trim(),
@@ -29,14 +28,6 @@ export default class AuthController {
             ]),
             address: Schema.string([
                 rules.trim()
-            ]),
-            avatar: Schema.string([
-                rules.trim()
-            ]),
-            cardCode: Schema.string([
-                rules.trim(),
-                rules.regex(/^[0-9]*$/),
-                rules.unique({table:'users', column:'card_code'})
             ]),
             password: Schema.string([
                 rules.trim(),
@@ -72,7 +63,7 @@ export default class AuthController {
         const email = request.input('email')
         const password = request.input('password')
         try{
-            const bearerToken = await auth.attempt(email, password, {expiresIn:'60mins'})
+            const bearerToken = await auth.attempt(email, password)
             const userData = await User.findBy('email', email)
             return response.status(200).json(
                 new ResponseData(
@@ -93,16 +84,11 @@ export default class AuthController {
         }   
     }
 
-    public async logout({auth, response}: HttpContextContract){
+    //logout()
+    public async logout({request, response, auth}){
+        //revoke token        
         await auth.use('api').revoke()
-        return response.json(
-            new ResponseData(
-                response.getStatus,
-                EnumStatus.SUCCESS,
-                `'revoked':true`
-            )
-        )
+        await Database.from('api_tokens').delete().where('expires_at','<',`${DateTime.now().toSQLDate()} ${DateTime.now().toSQLTime()}`)
+        return response.status(200).clearCookies('accessToken')
     }
-}
-
 }
