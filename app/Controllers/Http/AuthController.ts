@@ -87,8 +87,9 @@ export default class AuthController {
     //logout()
     public async logout({response, auth}){
         //revoke token        
+        const userId = auth.user.id
         await auth.use('api').revoke()
-        await Database.from('api_tokens').delete().where('expires_at','<',`${DateTime.now().toSQLDate()} ${DateTime.now().toSQLTime()}`)
+        await Database.from('api_tokens').delete().where('user_id', userId).where('expires_at','<',`${DateTime.now().toSQLDate()} ${DateTime.now().toSQLTime()}`)
         return response.status(200).clearCookies('accessToken')
     }
 }
