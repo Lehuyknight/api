@@ -13,6 +13,7 @@ export default class UsersSchema extends BaseSchema {
       table.string('address').nullable().defaultTo('')
       table.string('phone',12).notNullable()
       table.string('auth_token').nullable().defaultTo('')
+      table.boolean('is_admin').nullable().defaultTo(false)
 
       /**
        * Uses timestampz for PostgreSQL and DATETIME2 for MSSQL

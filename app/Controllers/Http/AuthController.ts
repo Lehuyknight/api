@@ -1,6 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {schema as Schema, rules} from '@ioc:Adonis/Core/Validator'
-import ResponseData from 'App/utils/ResponseData'
+import ResponseFormat from 'App/utils/ResponseFormat'
 const EnumStatus = require('App/utils/EnumStatus')
 import User from 'App/Models/User'
 import Database from '@ioc:Adonis/Lucid/Database'
@@ -41,23 +41,82 @@ export default class AuthController {
             const userData = await request.validate({schema: validator})
             const createData = await User.create(userData)
             return response.json(
-                new ResponseData(
-                    response.getStatus(),
+                new ResponseFormat(
+                    createData,
+                    true,
                     EnumStatus.SUCCESS,
-                    createData
+                    true
                 )
             )
         }
         catch(err){
             return response.json(
-                new ResponseData(
-                    response.getStatus(),
+                new ResponseFormat(
+                    err,
+                    false,
                     EnumStatus.ERROR,
-                    err
+                    true
                 )
             )
         }
     }
+
+    public async signupAdmin({request, response}:HttpContextContract){
+        const validator = await Schema.create({
+            email: Schema.string([
+                rules.trim(),
+                rules.normalizeEmail({
+                    allLowercase: true,
+                    gmailRemoveDots: true,
+                    gmailRemoveSubaddress: true,
+                }),
+                rules.unique({table:'users',column:'email'}),
+                rules.required()
+            ]),
+            name: Schema.string([
+                rules.trim(),
+                rules.maxLength(100)
+            ]),
+            phone: Schema.string([
+                rules.trim(),
+                rules.mobile()
+            ]),
+            address: Schema.string([
+                rules.trim()
+            ]),
+            password: Schema.string([
+                rules.trim(),
+                rules.minLength(6),
+                rules.unique({table:'users', column:'password'}),
+                rules.confirmed(),
+                rules.required()
+            ]),
+            isAdmin: Schema.boolean()
+        })
+        try{
+            const userData = await request.validate({schema: validator})
+            const createData = await User.create(userData)
+            return response.json(
+                new ResponseFormat(
+                    createData,
+                    true,
+                    EnumStatus.SUCCESS,
+                    true
+                )
+            )
+        }
+        catch(err){
+            return response.json(
+                new ResponseFormat(
+                    err,
+                    false,
+                    EnumStatus.ERROR,
+                    true
+                )
+            )
+        }
+    }
+
 
     public async login({request, response, auth}:HttpContextContract){
         const email = request.input('email')
@@ -66,19 +125,21 @@ export default class AuthController {
             const bearerToken = await auth.attempt(email, password)
             const userData = await User.findBy('email', email)
             return response.status(200).json(
-                new ResponseData(
-                    response.getStatus(),
+                new ResponseFormat(
+                    {userData, bearerToken},
+                    true,
                     EnumStatus.SUCCESS,
-                    {userData, bearerToken}
+                    true
                 )
             )
         }
         catch(err){
             return response.json(
-                new ResponseData(
-                    null,
-                    EnumStatus.ERROR,
-                    'Invalid Credentials'
+                new ResponseFormat(
+                    err,
+                    false,
+                    'Invalid Credentials',
+                    true
                 )
             )
         }   

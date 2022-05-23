@@ -5,6 +5,12 @@ export default class OrderEntity extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public orderId: number
+
+  @column()
+  public test: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

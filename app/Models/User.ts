@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel, beforeCreate } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeSave, BaseModel, beforeCreate, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import Env from '@ioc:Adonis/Core/Env'
+import Order from './Order'
 export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: number
@@ -25,6 +26,9 @@ export default class User extends BaseModel {
   public name :string
 
   @column()
+  public isAdmin: boolean
+
+  @column()
   public authToken: string | null
 
   @column.dateTime({ autoCreate: true })
@@ -32,6 +36,9 @@ export default class User extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @hasMany(() => Order)
+  public order: HasMany<typeof Order>
 
   @beforeSave()
   public static async hashPassword (user: User) {
