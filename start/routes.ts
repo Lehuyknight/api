@@ -20,3 +20,4 @@
 
 import './routes/user'
 import './routes/userOrder'
+import Route from '@ioc:Adonis/Core/Route'

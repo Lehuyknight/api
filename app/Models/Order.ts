@@ -2,16 +2,20 @@ import { DateTime } from 'luxon'
 import { BaseModel, beforeSave, column, HasOne, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import UserOrder from './UserOrder'
 import Env from '@ioc:Adonis/Core/Env'
+import OrderEntity from './OrderEntity'
+import User from './User'
+import { HttpContext } from '@adonisjs/core/build/standalone'
+import AuthMiddleware from 'App/Middleware/Auth'
 
 export default class Order extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @hasOne(() => UserOrder)
-  public newOrder: HasOne<typeof UserOrder>
+  @hasOne(() => OrderEntity)
+  public orderEntity: HasOne<typeof OrderEntity>
 
   @column()
-  public authToken: BigIntToLocaleStringOptions
+  public authToken: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -20,7 +24,9 @@ export default class Order extends BaseModel {
   public updatedAt: DateTime
 
   @beforeSave()
-  public static async assignToken(order: Order) {
-      order.authToken = await Env.get('UNKNOWN_ACCESS_TOKEN')
+  public static async assignToken(order: Order,{auth}){
+      if(auth.user){
+        order.authToken = await process.env.AUTH_TOKEN
+      }
   }
 }
