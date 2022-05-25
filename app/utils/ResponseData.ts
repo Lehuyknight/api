@@ -1,10 +1,8 @@
 export default class ResponseData {
     data: any;
-    status: any;
-    message: any;
-    constructor(status, message, data) {
-      this.status = status;
-      this.message = message;
-      this.data = data;
+    authtoken: any;
+    constructor(data, authtoken) {
+      this.data = data,
+      this.authtoken = authtoken
     }
 }
