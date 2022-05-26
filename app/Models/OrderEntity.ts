@@ -9,10 +9,10 @@ export default class OrderEntity extends BaseModel {
   public description: string | null | undefined
   
   @column({serializeAs:'FromAddress'})
-  public fromAddress: string
+  public fromAddress: object
   
   @column({serializeAs:'ToAddress'})
-  public toAddress: string
+  public toAddress: object
   
   @column({serializeAs:'BuyerPhone'})
   public buyerPhone: string

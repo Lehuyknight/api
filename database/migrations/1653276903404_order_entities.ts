@@ -1,12 +1,32 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+import { EnumCategory } from 'App/utils/EnumCategory';
+import { EnumOrderStatus } from 'App/utils/EnumOrderStatus';
 
 export default class extends BaseSchema {
   protected tableName = 'order_entities'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-
+      table.increments('id').primary()
+      table.string('description').nullable()
+      table.json('from_address').notNullable()
+      table.json('to_address').notNullable()
+      table.string('buyer_phone',15).notNullable()
+      table.string('buyer_name').notNullable()
+      table.integer('cod_amount').notNullable().unsigned()
+      table.integer('shipping_fee').notNullable().unsigned()
+      table.datetime('deliver_time').nullable().defaultTo('0000-00-00 00:00:00')
+      table.integer('shop_order_id').nullable().defaultTo(0)
+      table.enum('category',Object.values(EnumCategory))
+      table.integer('weight').nullable().defaultTo(0)
+      table.string('image_url').nullable().defaultTo('')
+      table.string('from_location').nullable()
+      table.string('to_location').nullable()
+      table.string('hub_phone_number', 15).notNullable()
+      table.string('hub_phone_name').nullable().defaultTo('')
+      table.string('locality').nullable().defaultTo('')
+      table.integer('item_qty').unsigned().defaultTo(1)
+      table.enum('status',Object.values(EnumOrderStatus))
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

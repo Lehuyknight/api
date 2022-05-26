@@ -4,4 +4,4 @@ Route.group(() =>{
     Route.group(() => {
         Route.post('/CreateNewOrder','OrdersController.createNewOrder')
     }).prefix('Epartner')
-}).prefix('api')
+}).prefix('api').middleware('auth')

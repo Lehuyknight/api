@@ -6,15 +6,20 @@ import ResponseData from 'App/utils/ResponseData';
 import { schema as Schema, rules} from '@ioc:Adonis/Core/Validator'
 import OrderEntity from 'App/Models/OrderEntity';
 
+let Location:{
+    lat:number,
+    lng: number
+}
 export default class OrdersController {
     public async createNewOrder({request, response, auth}:HttpContextContract){        
         const validator = await Schema.create({
             description: Schema.string.nullableAndOptional([
                 rules.trim()
             ]),
-            fromAddress: Schema.string([
-                rules.trim()
-            ]),
+            fromAddress: Schema.object().members({
+                lat: Schema.number(),
+                lng: Schema.number()
+            }),
             toAddress: Schema.string([
                 rules.trim(),
             ]),
@@ -42,7 +47,10 @@ export default class OrdersController {
                 rules.trim(),
                 rules.unsigned()
             ]),
-            category: Schema.enum.nullableAndOptional(Object.values(EnumCategory)),
+            category: Schema.number([
+                rules.trim(),
+                rules.range(1,2)
+            ]),
             weight: Schema.number.nullableAndOptional([
                 rules.trim(),
                 rules.unsigned()
@@ -72,13 +80,16 @@ export default class OrdersController {
                 rules.trim(),
                 rules.unsigned()
             ]),
-            status: Schema.enum(Object.values(EnumOrderStatus))
+            status: Schema.number([
+                rules.trim(),
+                rules.range(1,6)
+            ])
         })
         try{
             const data = await request.validate({schema: validator})
             const newOrder = await OrderEntity.create(data)
             if(auth.user){
-                const authToken = auth.user.authToken
+                const authToken = await auth.user.authToken
                 return response.status(200).json(
                     new ResponseData(
                         newOrder,
