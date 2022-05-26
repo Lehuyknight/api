@@ -20,9 +20,10 @@ export default class OrdersController {
                 lat: Schema.number(),
                 lng: Schema.number()
             }),
-            toAddress: Schema.string([
-                rules.trim(),
-            ]),
+            toAddress: Schema.object().members({
+                lat: Schema.number(),
+                lng: Schema.number()
+            }),
             buyerPhone: Schema.string([
                 rules.trim(),
                 rules.mobile(),
