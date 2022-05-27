@@ -10,7 +10,7 @@ export default class extends BaseSchema {
       table.string('address').notNullable()
       table.string('phone',12).notNullable()
       table.string('description').nullable()
-      table.string('item_name').notNullable()
+      table.string('item_name').nullable().defaultTo('Cơm sườn')
       table.integer('qty').notNullable().unsigned()
       table.string('note').nullable().defaultTo('')
       table.string('source').nullable().defaultTo('web')

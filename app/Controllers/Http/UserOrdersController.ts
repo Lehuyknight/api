@@ -23,10 +23,9 @@ export default class UserOrdersController {
                 rules.required()
             ]),
             description: Schema.string.nullableAndOptional([
-                rules.trim(),
-                rules.nullable()
+                rules.trim()
             ]),
-            itemName: Schema.string([
+            itemName: Schema.string.nullableAndOptional([
                 rules.trim()
             ]),
             qty: Schema.number([
@@ -34,16 +33,13 @@ export default class UserOrdersController {
                 rules.unsigned(),
             ]),
             note: Schema.string.nullableAndOptional([
-                rules.trim(),
-                rules.nullable()
+                rules.trim()
             ]),
             source: Schema.string.nullableAndOptional([
-                rules.trim(),
-                rules.nullable()
+                rules.trim()
             ]),
             status: Schema.string.nullableAndOptional   ([
-                rules.trim(),
-                rules.nullable()
+                rules.trim()
             ]),
             success: Schema.date.nullableAndOptional({
                 format: 'yyyy-MM-dd HH:mm:ss',
