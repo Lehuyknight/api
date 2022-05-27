@@ -4,6 +4,7 @@ const EnumStatus = require('App/utils/EnumStatus');
 import { schema as Schema, rules} from '@ioc:Adonis/Core/Validator'
 import UserOrder from 'App/Models/UserOrder';
 import { EnumOrderStatus } from 'App/utils/EnumOrderStatus';
+import Database from '@ioc:Adonis/Lucid/Database';
 
 export default class UserOrdersController {
     public async addUserOrder({request, response, params}: HttpContextContract){
@@ -79,7 +80,7 @@ export default class UserOrdersController {
         }
     }
 
-    public async getUserOrder({response, params}:HttpContextContract){
+    public async getUserOrder({request, response, params}:HttpContextContract){
         if(params.id){
             try{
                 const data = await UserOrder.findOrFail(params.id)
@@ -103,7 +104,10 @@ export default class UserOrdersController {
         }
         else{
             try{
-                const data = await UserOrder.all()
+                const x = await UserOrder.query().select('*')
+                const page = request.input('page',1)
+                const limit = 10
+                const data = await UserOrder.query().select('*').paginate(page, limit)
                 return response.json(
                     new ResponseFormat(
                         data,
@@ -126,7 +130,7 @@ export default class UserOrdersController {
         }
     }
 
-    public async deleteUserOrder({request, response, params}: HttpContextContract){
+    public async deleteUserOrder({response, params}: HttpContextContract){
         try{
             const data = await UserOrder.findOrFail(params.id)
             await data.delete()

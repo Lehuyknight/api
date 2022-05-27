@@ -6,5 +6,7 @@ Route.group(() =>{
 }).prefix('user')
 Route.group(() =>{
     Route.get('/user/:id?','UsersController.getUser')
-    Route.post('/register','AuthController.signupAdmin').middleware('checkAdmin')
+    Route.post('/register','AuthController.signupAdmin')
+    Route.patch('/user/:id','UsersController.updateUser')
+    Route.delete('/user/:id','UsersController.deleteUser')
 }).prefix('admin').middleware('auth').middleware('checkAdmin')
