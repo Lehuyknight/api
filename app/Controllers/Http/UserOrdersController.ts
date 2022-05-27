@@ -3,6 +3,7 @@ import ResponseFormat from 'App/utils/ResponseFormat';
 const EnumStatus = require('App/utils/EnumStatus');
 import { schema as Schema, rules} from '@ioc:Adonis/Core/Validator'
 import UserOrder from 'App/Models/UserOrder';
+import { EnumOrderStatus } from 'App/utils/EnumOrderStatus';
 
 export default class UserOrdersController {
     public async addUserOrder({request, response, params}: HttpContextContract){
@@ -49,10 +50,11 @@ export default class UserOrdersController {
             //! UPDATE REQUEST BODY
             const x = request.all()
             const y = await request.input('qty').replace(' suất','')
+            const z = EnumOrderStatus.CREATED
             x.qty = y
+            x.status = z
             //! A better diffrent way?(maybe)
-            const z = await request.input('qty')
-            
+            //const z = await request.input('qty')
             await request.updateBody(x)
             const validator = await request.validate({schema: data})
             const userOrderData = await UserOrder.create(validator)
