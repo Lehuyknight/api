@@ -50,9 +50,13 @@ export default class UserOrdersController {
             })
         })
         try{
+            //! UPDATE REQUEST BODY
             const x = request.all()
             const y = await request.input('qty').replace(' suất','')
             x.qty = y
+            //! A better diffrent way?(maybe)
+            const z = await request.input('qty')
+            
             await request.updateBody(x)
             const validator = await request.validate({schema: data})
             const userOrderData = await UserOrder.create(validator)
