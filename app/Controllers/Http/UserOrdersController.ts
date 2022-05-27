@@ -50,7 +50,7 @@ export default class UserOrdersController {
             //! UPDATE REQUEST BODY
             const x = request.all()
             const y = await request.input('qty').replace(' suất','')
-            const z = EnumOrderStatus.PENDING
+            const z = EnumOrderStatus.CREATED
             x.qty = y
             x.status = z
             //! A better diffrent way?(maybe)
