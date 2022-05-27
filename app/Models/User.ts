@@ -36,9 +36,6 @@ export default class User extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @hasMany(() => Order)
-  public order: HasMany<typeof Order>
-
   @beforeSave()
   public static async hashPassword (user: User) {
     if (user.$dirty.password) {

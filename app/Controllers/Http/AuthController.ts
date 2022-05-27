@@ -89,7 +89,8 @@ export default class AuthController {
                 rules.minLength(6),
                 rules.unique({table:'users', column:'password'}),
                 rules.confirmed(),
-                rules.required()
+                rules.required(),
+                rules.maxLength(100)
             ]),
             isAdmin: Schema.boolean()
         })
