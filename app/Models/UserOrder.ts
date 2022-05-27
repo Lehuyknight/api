@@ -18,7 +18,7 @@ export default class UserOrder extends BaseModel {
   public description: string | null
   
   @column()
-  public itemName: string
+  public itemName: string | null
   
   @column()
   public qty: number

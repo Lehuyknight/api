@@ -33,7 +33,7 @@ export default class OrderEntity extends BaseModel {
   public shopOrderId: number | null | undefined
   
   @column({serializeAs:'Category'})
-  public category: string | null | undefined
+  public category: number | null | undefined
   
   @column({serializeAs:'Weight'})
   public weight: number | null | undefined
@@ -60,7 +60,7 @@ export default class OrderEntity extends BaseModel {
   public itemQty: number
   
   @column({serializeAs:'Status'})
-  public status: string
+  public status: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
