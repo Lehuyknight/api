@@ -4,7 +4,8 @@
     "./commands",
     "@adonisjs/core/build/commands/index.js",
     "@adonisjs/repl/build/commands",
-    "@adonisjs/lucid/build/commands"
+    "@adonisjs/lucid/build/commands",
+    "adonis5-swagger/build/commands"
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
@@ -27,7 +28,9 @@
     "./providers/AppProvider",
     "@adonisjs/core",
     "@adonisjs/lucid",
-    "@adonisjs/auth"
+    "@adonisjs/auth",
+    "@adonisjs/view",
+    "adonis5-swagger"
   ],
   "aceProviders": [
     "@adonisjs/repl"
@@ -45,5 +48,11 @@
   },
   "testProviders": [
     "@japa/preset-adonis/TestsProvider"
+  ],
+  "metaFiles": [
+    {
+      "pattern": "resources/views/**/*.edge",
+      "reloadServer": false
+    }
   ]
 }

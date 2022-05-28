@@ -140,4 +140,9 @@ export default class UsersController {
             )
         }
     }
+
+    public async swagger({ view }){
+        const specUrl = 'your spec url'
+	    return view.render('swagger', { specUrl })
+    }
 }

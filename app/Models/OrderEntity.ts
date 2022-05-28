@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
-
+import Location from './Location'
 export default class OrderEntity extends BaseModel {
   @column({ isPrimary: true })
   public id: number
@@ -9,10 +9,10 @@ export default class OrderEntity extends BaseModel {
   public description: string | null | undefined
   
   @column({serializeAs:'FromAddress'})
-  public fromAddress: object
+  public fromAddress: string
   
   @column({serializeAs:'ToAddress'})
-  public toAddress: object
+  public toAddress: string
   
   @column({serializeAs:'BuyerPhone'})
   public buyerPhone: string
@@ -42,10 +42,10 @@ export default class OrderEntity extends BaseModel {
   public imageUrl: string | null | undefined
   
   @column({serializeAs:'FromLocation'})
-  public fromLocation: number | null | undefined
+  public fromLocation: Location | null | undefined
   
   @column({serializeAs:'ToLocation'})
-  public toLocation: number | null | undefined
+  public toLocation: Location | null | undefined
   
   @column({serializeAs:'HubPhoneNumber'})
   public hubPhoneNumber: string

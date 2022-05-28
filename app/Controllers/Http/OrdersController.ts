@@ -16,14 +16,12 @@ export default class OrdersController {
             description: Schema.string.nullableAndOptional([
                 rules.trim()
             ]),
-            fromAddress: Schema.object().members({
-                lat: Schema.number(),
-                lng: Schema.number()
-            }),
-            toAddress: Schema.object().members({
-                lat: Schema.number(),
-                lng: Schema.number()
-            }),
+            fromAddress: Schema.string([
+                rules.trim()
+            ]),
+            toAddress: Schema.string([
+                rules.trim()
+            ]),
             buyerPhone: Schema.string([
                 rules.trim(),
                 rules.mobile(),
@@ -60,12 +58,22 @@ export default class OrdersController {
                 rules.trim(),
                 rules.regex(/^(?:[a-z]:)?[\/\\]{0,2}(?:[.\/\\ ](?![.\/\\\n])|[^<>:"|?*.\/\\ \n])+$/),
             ]),
-            fromLocation: Schema.number.nullableAndOptional([
-                rules.trim()
-            ]),
-            toLocation: Schema.number.nullableAndOptional([
-                rules.trim()
-            ]),
+            fromLocation: Schema.object.nullableAndOptional().members({
+                lat: Schema.number.nullableAndOptional([
+                    rules.trim()
+                ]),
+                lng: Schema.number.nullableAndOptional([
+                    rules.trim()
+                ])
+            }),
+            toLocation: Schema.object.nullableAndOptional().members({
+                lat: Schema.number.nullableAndOptional([
+                    rules.trim()
+                ]),
+                lng: Schema.number.nullableAndOptional([
+                    rules.trim()
+                ])
+            }),
             hubPhoneNumber: Schema.string([
                 rules.trim(),
                 rules.mobile(),

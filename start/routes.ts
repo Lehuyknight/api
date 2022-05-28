@@ -17,7 +17,7 @@
 | import './routes/customer'
 |
 */
-//import Route from '@ioc:Adonis/Core/Route'
+import Route from '@ioc:Adonis/Core/Route'
 
 import './routes/user'
 import './routes/userOrder'
