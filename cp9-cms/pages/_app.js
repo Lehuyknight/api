@@ -9,6 +9,9 @@ import PageChange from "components/PageChange/PageChange.js";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
 
+import { ReactNotifications } from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
+
 Router.events.on("routeChangeStart", (url) => {
 	console.log(`Loading: ${url}`);
 	document.body.classList.add("body-page-transition");
@@ -72,10 +75,11 @@ export default class MyApp extends App {
 						name="viewport"
 						content="width=device-width, initial-scale=1, shrink-to-fit=no"
 					/>
-					<title>Notus NextJS by Creative Tim</title>
+					<title>Com9phut CMS</title>
 					<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 				</Head>
 				<Layout>
+					<ReactNotifications />
 					<Component {...pageProps} />
 				</Layout>
 			</React.Fragment>
