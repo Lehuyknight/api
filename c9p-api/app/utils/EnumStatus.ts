@@ -1,0 +1,15 @@
+const SUCCESS = 'SUCCESS';
+const ERROR = 'ERROR';
+const EMPTY = 'EMPTY';
+const NOT_FOUND = 'NOT FOUND';
+const NOT_AUTHORIZED = 'NOT AUTHORIZED';
+const NOT_FORBIDDEN = 'NOT FORBIDDEN';
+
+module.exports = {
+  SUCCESS,
+  ERROR,
+  EMPTY,
+  NOT_FOUND,
+  NOT_AUTHORIZED,
+  NOT_FORBIDDEN,
+};

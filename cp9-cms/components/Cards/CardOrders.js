@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {map} from 'lodash';
 import moment from "moment";
+import Link from "next/link";
 
 // components
 import {AppServices} from "../../src/services/AppServices";
@@ -21,7 +22,7 @@ export default function CardOrders({color}) {
 				AppServices.messages('Không kết nối được với CSDL', 'danger')
 			}
 		})
-	})
+	}, []);
 
 	return (
 		<>
@@ -98,6 +99,16 @@ export default function CardOrders({color}) {
 										: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
 								}
 							>
+								Nguồn
+							</th>
+							<th
+								className={
+									"px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+									(color === "light"
+										? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+										: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+								}
+							>
 								Trạng thái
 							</th>
 							<th
@@ -109,6 +120,16 @@ export default function CardOrders({color}) {
 								}
 							>
 								Ngày khởi tạo
+							</th>
+							<th
+								className={
+									"px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+									(color === "light"
+										? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+										: "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+								}
+							>
+								Thao tác
 							</th>
 						</tr>
 						</thead>
@@ -128,12 +149,22 @@ export default function CardOrders({color}) {
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
 										{order.qty}
 									</td>
+									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+										Ladipage
+									</td>
 									<td
 										className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
 										dangerouslySetInnerHTML={{ __html: AppServices.getOrderStatus((order.status)) }}
 									/>
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
 										{moment(order.created_at).format('H:m:s DD-MM-YYYY')}
+									</td>
+									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+										<Link href="/admin/orders/[id]" as={"/admin/orders/" + order.id}>
+											<a href="#">
+												<i className="fas fa-eye text-orange-500 mr-2"></i> Xem đơn
+											</a>
+										</Link>
 									</td>
 								</tr>
 							)

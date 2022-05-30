@@ -94,4 +94,23 @@ export class AppServices {
 		let response = await fetch(listOrdersApi, requestOptions)
 		return await response.json();
 	}
+
+	/**
+	 *
+	 * @param orderId
+	 * @param token
+	 * @returns {Promise<any>}
+	 */
+	static getOrderDetail = async (orderId, token) => {
+		const requestOptions = {
+			method: 'GET',
+			headers: {
+				'Authorization': 'Bearer ' + token
+			},
+			mode: 'cors'
+		};
+
+		let response = await fetch(listOrdersApi + '/' + orderId, requestOptions)
+		return await response.json();
+	}
 }
