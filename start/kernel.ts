@@ -42,5 +42,6 @@ Server.middleware.register([
 */
 Server.middleware.registerNamed({
   auth:'App/Middleware/Auth',
-  checkAdmin:'App/Middleware/CheckAdmin'
+  checkAdmin:'App/Middleware/CheckAdmin',
+  checkLogin:() => import('App/Middleware/IsLoggedIn')
 })

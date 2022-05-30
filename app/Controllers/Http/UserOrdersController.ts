@@ -4,10 +4,9 @@ const EnumStatus = require('App/utils/EnumStatus');
 import { schema as Schema, rules} from '@ioc:Adonis/Core/Validator'
 import UserOrder from 'App/Models/UserOrder';
 import { EnumOrderStatus } from 'App/utils/EnumOrderStatus';
-import Database from '@ioc:Adonis/Lucid/Database';
 
 export default class UserOrdersController {
-    public async addUserOrder({request, response, params}: HttpContextContract){
+    public async addUserOrder({request, response, params, auth}: HttpContextContract){
         const data = await Schema.create({
             name: Schema.string([
                 rules.trim(),
@@ -47,36 +46,46 @@ export default class UserOrdersController {
                 format: 'yyyy-MM-dd HH:mm:ss',
             })
         })
-        try{
-            //! UPDATE REQUEST BODY
-            const x = request.all()
-            const y = await request.input('qty').replace(' suất','')
-            const z = EnumOrderStatus.CREATED
-            x.qty = y
-            x.status = z
-            //! A better diffrent way?(maybe)
-            //const z = await request.input('qty')
-            await request.updateBody(x)
-            const validator = await request.validate({schema: data})
-            const userOrderData = await UserOrder.create(validator)
-            return response.json(
-                new ResponseFormat(
-                     userOrderData,
-                    true,
-                    EnumStatus.SUCCESS,
-                    true
+        if(auth.isLoggedIn){    
+            try{
+                //! UPDATE REQUEST BODY (Update Better Way)
+                const x = request.all()
+                const y = await request.input('qty').replace(/\D/g,'')
+                const yy = await request.input('qty').toString()
+                const yyy = yy.replace(/\D/g,'')
+                const z = EnumOrderStatus.CREATED
+                console.log(yyy)
+                x.qty = y
+                x.status = z
+                // //! A better diffrent way?(maybe)(updated)
+                // const z2 = await request.input('qty')
+                // const zz = z2.replace(/^\D+/g, '')
+                // x.qty = zz
+                await request.updateBody(x)
+                const validator = await request.validate({schema: data})
+                const userOrderData = await UserOrder.create(validator)
+                return response.json(
+                    new ResponseFormat(
+                        userOrderData,
+                        true,
+                        EnumStatus.SUCCESS,
+                        true
+                    )
                 )
-            )
+            }
+            catch(err){
+                return response.json(
+                    new ResponseFormat(
+                        err,
+                        false,
+                        EnumStatus.ERROR,
+                        true
+                    )
+                )
+            }
         }
-        catch(err){
-            return response.json(
-                new ResponseFormat(
-                    err,
-                    false,
-                    EnumStatus.ERROR,
-                    true
-                )
-            )
+        else{
+            return response.json("nope")
         }
     }
 

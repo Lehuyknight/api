@@ -5,11 +5,6 @@ import { EnumOrderStatus } from 'App/utils/EnumOrderStatus';
 import ResponseData from 'App/utils/ResponseData';
 import { schema as Schema, rules} from '@ioc:Adonis/Core/Validator'
 import OrderEntity from 'App/Models/OrderEntity';
-
-let Location:{
-    lat:number,
-    lng: number
-}
 export default class OrdersController {
     public async createNewOrder({request, response, auth}:HttpContextContract){        
         const validator = await Schema.create({
@@ -120,4 +115,29 @@ export default class OrdersController {
             return response.status(400).json(err)
         } 
     }
+
+    public async login({request, response, auth}:HttpContextContract){
+
+    }
+
+    public async getOrder({request, response, auth}: HttpContextContract){
+        try{
+            const data = await request.body()
+            const order = data.Data.Order
+            return response.json(order)
+        }
+        catch(err){
+            return response.json(err)
+        }
+    }
+    
+    public async getOrders({request, response, params}: HttpContextContract){
+
+    }
+
+    public async cancelOrders({request, response, params}: HttpContextContract){
+
+    }
+
+
 }

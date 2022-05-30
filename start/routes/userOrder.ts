@@ -5,4 +5,4 @@ Route.group(() => {
     Route.patch('/:id', 'UserOrdersController.patchUserOrder').middleware('checkAdmin')
     Route.delete('/:id','UserOrdersController.deleteUserOrder').middleware('checkAdmin')
 }).prefix('userorder').middleware('auth')
-Route.post('/','UserOrdersController.addUserOrder').prefix('userorder')
+Route.post('/','UserOrdersController.addUserOrder').prefix('userorder').middleware('checkLogin')
