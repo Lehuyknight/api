@@ -54,9 +54,7 @@ export default class IsLoggedIn {
   /**
    * Handle request
    */
-  public async handle (
-    { auth }: HttpContextContract,
-    next: () => Promise<void>,
+  public async handle ({ auth }: HttpContextContract, next: () => Promise<void>,
     customGuards: (keyof GuardsList)[]
   ) {
     /**

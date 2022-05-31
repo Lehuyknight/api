@@ -1,17 +1,19 @@
 {
-    "fromAddress": "test",
-    "toAddress": "test",
-    "buyerPhone": "018263971264",
-    "buyerName": "le Huy",
-    "codAmount": 1827,
-    "shippingFee": 123,
-    "shopOrderId":1,
-    "category": 2,
-    "weight": 2123.2,
-    "imageUrl": "/url",
-    "fromLocation": 9.2,
-    "toLocation": 9.2,
-    "hubPhoneNumber": "09127631412",
-    "itemQty":1,
-    "status": 1
+    "FronLocation": {
+        "Lat": 1.0,
+        "Lng": 2.0
+      },
+      "ToLocation": {
+        "Lat": 1.0,
+        "Lng": 2.0
+      }
+}
+//!
+{
+    "FronLocation":
+        "Lat": 1.0,
+        "Lng": 2.0,
+      "ToLocation": 
+        "Lat": 1.0,
+        "Lng": 2.0,
 }

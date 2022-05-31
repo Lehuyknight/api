@@ -6,3 +6,4 @@ Route.group(() =>{
         Route.post('/order', 'OrdersController.getOrder')
     }).prefix('Epartner')
 }).prefix('api').middleware('auth')
+Route.post('/test', 'OrdersController.getOrders').middleware('auth')

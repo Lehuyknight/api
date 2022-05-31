@@ -4,6 +4,12 @@ const EnumStatus = require('App/utils/EnumStatus');
 import { schema as Schema, rules} from '@ioc:Adonis/Core/Validator'
 import UserOrder from 'App/Models/UserOrder';
 import { EnumOrderStatus } from 'App/utils/EnumOrderStatus';
+import fetch from 'node-fetch';
+import ResponseData from 'App/utils/ResponseData';
+import ResponseOrder from 'App/utils/ResponseOrder';
+import OrderEntity from 'App/Models/OrderEntity';
+import { DateTime } from 'luxon';
+
 
 export default class UserOrdersController {
     public async addUserOrder({request, response, params, auth}: HttpContextContract){
@@ -47,6 +53,61 @@ export default class UserOrdersController {
             })
         })
         if(auth.isLoggedIn){    
+                //! UPDATE REQUEST BODY (Update Better Way)
+                const x = request.all()
+                const y = await request.input('qty').replace(/\D/g,'')
+                const yy = await request.input('qty').toString()
+                const yyy = yy.replace(/\D/g,'')
+                const z = EnumOrderStatus.CREATED
+                x.qty = y
+                x.status = z
+                // //! A better diffrent way?(maybe)(updated)
+                // const z2 = await request.input('qty')
+                // const zz = z2.replace(/^\D+/g, '')
+                // x.qty = zz
+                await request.updateBody(x)
+                const validator = await request.validate({schema: data})
+                const orderToSS = new OrderEntity()
+                orderToSS.description = validator.description
+                orderToSS.fromAddress = ''
+                orderToSS.toAddress = validator.address
+                orderToSS.buyerPhone = validator.phone
+                orderToSS.buyerName = validator.name
+                orderToSS.codAmount = 0
+                orderToSS.shippingFee = 0
+                orderToSS.deliverTime = DateTime.now()
+                orderToSS.shopOrderId = 1
+                orderToSS.category = 2
+                orderToSS.weight = 0
+                orderToSS.imageUrl = ''
+                //Google api go here
+                const lat = 0
+                const lng = 0
+                //
+                orderToSS.fromLocation = JSON.parse(`{"Lat": ${lat}, "Lng": ${lng}}`)
+                orderToSS.toLocation = JSON.parse(`{"Lat": ${lat}, "Lng": ${lng}}`)
+                orderToSS.hubPhoneName = ''
+                orderToSS.hubPhoneNumber = ''
+                orderToSS.locality = validator.source
+                orderToSS.itemQty = validator.qty
+            try{
+                const userOrderData = await UserOrder.create(validator)
+                await orderToSS.save()
+                
+
+            }
+            catch(err){
+                return response.json(
+                    new ResponseFormat(
+                        err,
+                        false,
+                        EnumStatus.ERROR,
+                        true
+                    )
+                )
+            }
+        }
+        else{
             try{
                 //! UPDATE REQUEST BODY (Update Better Way)
                 const x = request.all()
@@ -83,10 +144,7 @@ export default class UserOrdersController {
                     )
                 )
             }
-        }
-        else{
-            return response.json("nope")
-        }
+        } 
     }
 
     public async getUserOrder({request, response, params}:HttpContextContract){

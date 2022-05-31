@@ -26,7 +26,7 @@ export default class OrderEntity extends BaseModel {
   @column({serializeAs:'ShippingFee'})
   public shippingFee: number
   
-  @column({serializeAs:'DeliverTime'})
+  @column.dateTime({serializeAs:'DeliverTime'})
   public deliverTime: DateTime| null | undefined
   
   @column({serializeAs:'ShopOrderId'})
@@ -42,10 +42,10 @@ export default class OrderEntity extends BaseModel {
   public imageUrl: string | null | undefined
   
   @column({serializeAs:'FromLocation'})
-  public fromLocation: Location | null | undefined
+  public fromLocation: string | null | undefined
   
   @column({serializeAs:'ToLocation'})
-  public toLocation: Location | null | undefined
+  public toLocation: string | null | undefined
   
   @column({serializeAs:'HubPhoneNumber'})
   public hubPhoneNumber: string
