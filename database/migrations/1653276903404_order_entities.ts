@@ -16,7 +16,7 @@ export default class extends BaseSchema {
       table.integer('cod_amount').notNullable().unsigned()
       table.integer('shipping_fee').notNullable().unsigned()
       table.datetime('deliver_time').nullable().defaultTo('0000-00-00 00:00:00')
-      table.integer('shop_order_id').nullable().defaultTo(0)
+      table.uuid('shop_order_id').notNullable().unique()
       table.enum('category',Object.values(EnumCategory))
       table.integer('weight').nullable().defaultTo(0)
       table.string('image_url').nullable().defaultTo('')

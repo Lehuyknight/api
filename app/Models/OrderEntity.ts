@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
-import Location from './Location'
+import { BaseModel, beforeCreate, column } from '@ioc:Adonis/Lucid/Orm'
+import {v4 as uuidv4} from 'uuid'
 export default class OrderEntity extends BaseModel {
   @column({ isPrimary: true })
   public id: number
@@ -30,7 +30,7 @@ export default class OrderEntity extends BaseModel {
   public deliverTime: DateTime| null | undefined
   
   @column({serializeAs:'ShopOrderId'})
-  public shopOrderId: number | null | undefined
+  public shopOrderId: string | null | undefined
   
   @column({serializeAs:'Category'})
   public category: number | null | undefined
@@ -67,4 +67,9 @@ export default class OrderEntity extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeCreate()
+  public static assignUUID(order_entities: OrderEntity){
+    order_entities.shopOrderId = uuidv4()
+  }
 }
